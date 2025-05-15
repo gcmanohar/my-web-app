@@ -1,0 +1,33 @@
+
+name: Deploy to Web App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Flask app (for testing)
+        run: |
+          python app/main.py &
+          sleep 5
+          curl http://localhost:5000
+
+      - name: Deploy to Production
+        run: echo "Deploy to server here"
